@@ -10,18 +10,22 @@ float x = -0.5;
 
 //Интерполяция по Лагранжу
 float lagrange(float x, float* xi, float* yi);
-//Интерполяция по Ньютону
-float newtone(float x, float* xi, float* yi);
+
+//Интерполяция по Ньютону1
+float newtone1(float x, float* xi, float* yi);
+
+//Интерполяция по Ньютону2
+float newtone2(float x, float* xi, float* yi);
+
 //разделённые разности
-//float razdelen(float x, float* xi, float* yi);
 vector<vector<float>> razdelen();
 
 int main()
 {
-    
-    
 
-    cout << "Newtone: " << newtone(x, xi, yi) << endl;
+
+    cout << "Newtone1: " << newtone2(x, xi, yi) << endl;
+    cout << "Newtone2: " << newtone2(x, xi, yi) << endl;
     cout << "Lagranje: " << lagrange(x, xi, yi) << endl;
 }
 
@@ -51,29 +55,12 @@ float lagrange(float x, float* xi, float* yi)
                 zman = zman * (xi[k] - xi[j]);
         }
 
-        lag = lag + yi[k] * chis  /zman;
+        lag = lag + yi[k] * chis / zman;
     }
     return lag;
 }
 
 //разделённые разности
-
-//float razdelen(float x, float* xi, float* yi)
-//{
-//    int n = 6;
-//
-//
-//
-//    /*for (int m = 1; m < n; m++)
-//    {
-//        for (int k = 0; k < (n - m); k++)
-//        {
-//            if(m==1)
-//
-//        }
-//    }*/
-//}
-
 vector<vector<float>> razdelen()
 {
     int n = 6;
@@ -107,19 +94,40 @@ vector<vector<float>> razdelen()
     return a;
 }
 
-//Интерполяция по Ньютону
-float newtone(float x, float* xi, float* yi)
+//Интерполяция по Ньютону2
+float newtone2(float x, float* xi, float* yi)
 {
-    float newt = 0;
+   
 
     int n = 6;
-    int prod = 1;
+    float newt = yi[n];
+    float prod = 1;
+
+    vector<vector<float>> raz = razdelen();
 
     for (int k = 0; k < n; k++)
     {
         prod = prod * (x - xi[n - k + 1]);
-        newt = newt + yi[n - k, k] * prod;
+        newt = newt + raz[n - k, k] * prod;
     }
 
+    return newt;
+}
+
+//Интерполяция по Ньютону1
+float newtone1(float x, float* xi, float* yi)
+{
+    int n = 6;
+    float newt = yi[0];
+    float prod = 1;
+
+    vector<vector<float>> raz = razdelen();
+
+    for (int k = 1; k < n; k++)
+    {
+        prod = prod * (x - xi[k - 1]);
+        newt = newt + raz[0, k] * prod;
+    }
+    
     return newt;
 }
